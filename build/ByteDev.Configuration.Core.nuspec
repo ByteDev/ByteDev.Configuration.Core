@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>ByteDev.Configuration.Core</id>
+    <title>ByteDev.Configuration.Core</title>
+    <version>0.0.1</version>
+    <authors>Paul Stanley</authors>
+    <owners>Paul Stanley</owners>
+    <copyright>Copyright 2021</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Collection of classes to help when dealing with settings in .NET Core and beyond.</description>
+    <tags>configuration config settings appsettings json</tags>
+    <projectUrl>https://github.com/ByteDev/ByteDev.Configuration.Core</projectUrl>
+    <icon>images\icon.png</icon>
+    <license type="file">LICENSE</license>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\ByteDev.Configuration.Core\bin\Release\netstandard2.0\ByteDev.Configuration.Core.dll" target="lib\netstandard2.0" />
+    <file src="..\src\ByteDev.Configuration.Core\bin\Release\netstandard2.0\ByteDev.Configuration.Core.xml" target="lib\netstandard2.0" />
+    <file src="..\images\icon.png" target="images\" />
+    <file src="..\LICENSE*" target="" />
+  </files>
+</package>
