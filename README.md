@@ -4,7 +4,7 @@
 
 # ByteDev.Configuration.Core
 
-Collection of classes to help when dealing with settings in .NET Core and beyond.
+Collection of classes to help when dealing with configuration settings in .NET Core.
 
 ## Installation
 
