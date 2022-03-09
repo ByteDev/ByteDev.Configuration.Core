@@ -23,7 +23,7 @@ namespace ByteDev.Configuration.Core
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentException("Application setting key was null or empty.", nameof(key));
 
-            WithSetting($"ApplicationSettings:{key}", value?.ToString());
+            WithSetting(ApplicationSettings.GetKey(key), value?.ToString());
             return this;
         }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 
 namespace ByteDev.Configuration.Core.TestApp
@@ -7,29 +9,45 @@ namespace ByteDev.Configuration.Core.TestApp
     {
         private static void Main(string[] args)
         {
-            var jsonConfig = new JsonFileConfigurationFactory().Create();
+            var jsonConfig = new ConfigurationBuilder()
+                .SetBasePath(GetBaseLocation())
+                .AddAppSettingsJsonFile()
+                .Build();
+
+            // Bind
+            var jsonSettings = jsonConfig.GetApplicationSettings<MyApplicationSettings>();
 
             // Read individual values from configuration
             var s1 = jsonConfig.GetValue<Uri>("KeyVaultUri");
-            var s2 = jsonConfig.GetValue<string>("ApplicationSettings:SomeString");
-            var s3 = jsonConfig.GetValue<string>("ApplicationSettings:DoesNotExist");
-
-            var jsonSettings = jsonConfig.GetApplicationSettings<ApplicationSettings>();
+            var s2 = jsonConfig.GetApplicationSettingsValue<string>("SomeString");
+            var s3 = jsonConfig.GetApplicationSettingsValue<string>("DoesNotExist");
             
             // ------------
 
             var inMemConfig = new InMemoryConfigurationBuilder()
                 .WithApplicationSetting("SomeString", "Some in memory string")
-                .WithApplicationSetting("SomeInt", "100")
+                .WithApplicationSetting("SomeInt", 100)
+                .WithApplicationSetting("SomeUri", new Uri("https://localhost/"))
+                .WithApplicationSetting("SomeGuid1", Guid.NewGuid())
+                .WithApplicationSetting("SomeGuid2", Guid.NewGuid())
+                .WithApplicationSetting("SomeGuid3", Guid.NewGuid())
                 .Build();
 
-            var inMemSettings = inMemConfig.GetApplicationSettings<ApplicationSettings>();
+            // Bind
+            var inMemSettings = inMemConfig.GetApplicationSettings<MyApplicationSettings>();
 
-            var result = inMemConfig.GetValue(typeof(string), "SomeString");
+            // Read individual values from configuration
+            var result = inMemConfig.GetApplicationSettingsValue<int>("SomeInt");
+        }
+
+        private static string GetBaseLocation()
+        {
+            var assembly = typeof(Program).GetTypeInfo().Assembly;
+            return Directory.GetParent(new Uri(assembly.CodeBase).LocalPath).FullName;
         }
     }
 
-    public class ApplicationSettings
+    public class MyApplicationSettings
     {
         public string SomeString { get; set; }
 
