@@ -77,9 +77,22 @@ Task("UnitTests")
 
 		DotNetCoreUnitTests(settings);
 	});
+
+Task("IntTests")
+    .IsDependentOn("UnitTests")
+    .Does(() =>
+	{
+		var settings = new DotNetCoreTestSettings
+		{
+			Configuration = configuration,
+			NoBuild = true
+		};
+
+		DotNetCoreIntTests(settings);
+	});
 	
 Task("CreateNuGetPackages")
-    .IsDependentOn("UnitTests")
+    .IsDependentOn("IntTests")
     .Does(() =>
     {
 		var nugetVersion = GetNuGetVersion();
