@@ -22,3 +22,68 @@ Full details of the release notes can be viewed on [GitHub](https://github.com/B
 
 ## Usage
 
+Functionality includes:
+- `IConfigurationBuilder` extensions
+- `IConfiguration` extensions
+- `InMemoryConfigurationBuilder` class
+
+---
+
+### IConfigurationBuilder extension methods
+
+Build a configuration from JSON settings files:
+
+```csharp
+// Add a default settings file (appsettings.json)
+var config = new ConfigurationBuilder()
+    .AddAppSettingsJsonFile()
+    .Build();
+```
+
+```csharp
+// Add a UAT settings file (appsettings.uat.json)
+var config = new ConfigurationBuilder()
+    .AddAppSettingsJsonFile(new ConfigurationFileOptions
+    {
+        Environment = "uat",
+        IsOptional = false,
+        ReloadOnChange = true
+    })
+    .Build();
+```
+
+---
+
+### IConfiguration extension methods
+
+Retrieve settings from the configuration:
+
+```csharp
+// Get "MySettings" section bound to a type
+MySettings settings = config.GetSectionSettings<MySettings>("MySettings");
+
+// Get "ApplicationSettings" section bound to a type
+MyAppSettings settings = config.GetApplicationSettings<MyAppSettings>();
+
+// Get a particular "ApplicationSettings" section value
+string name = config.GetApplicationSettingsValue<string>("Name");
+```
+
+---
+
+### InMemoryConfigurationBuilder
+
+The `InMemoryConfigurationBuilder` class allows a configuration to be built quickly in memory (rather than from a settings JSON file).
+
+```csharp
+var builder = new InMemoryConfigurationBuilder();
+
+// Add a setting
+builder.WithSetting("KeyVaultUri", "https://mykeyvault/")
+
+// Add a setting in the "ApplicationSettings" section
+builder.WithApplicationSetting("Name", "John");
+
+// Build the configuration
+var config = builder.Build();
+```
